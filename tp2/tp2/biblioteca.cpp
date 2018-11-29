@@ -1,6 +1,8 @@
 #include "biblioteca.h"
 
-
+int Emprestimo::proximoNumero = 0;
+//
+//
 //void Biblioteca::excluirUser(Usuario user) {
 //	for (int i = 0; i < emprestimos.size; i++)
 //		if (emprestimos[i].getUser() == user)
@@ -51,22 +53,22 @@
 //	for (int i = 0; i < emprestimos.size; i++)
 //		arquivo.read((char *)&emprestimos[i], sizeof(Emprestimo));
 //}
-
-//void Emprestimo::addItem(Livro book) {
-//	ItemEmprestimo item(book);
-//	if (item.getLivro().getQtdeExemplares > 0) {
-//		itens.push_back(item);
-//		item.getLivro().dec();
-//	}
-//	else
-//		throw Erro("Quantidade de Exemplares Insuficiente");
-//}
+//
+void Emprestimo::addItem(Livro book) {
+	ItemEmprestimo item(book);
+	if (item.getLivro().getQtdeExemplares() > 0) {
+		itens.push_back(item);
+		item.getLivro().decQtdeExemplares();
+	}
+	else
+		throw Erro("Quantidade de Exemplares Insuficiente");
+}
 //
 //void Emprestimo::remvItem(Livro book) {
 //	for (int i = 0; i < itens.size; i++)
 //		if (itens[i].getLivro().getCodPub() == book.getCodPub()) {
 //			itens.erase(itens.begin() + i);
-//			itens[i].getLivro().inc();
+//			itens[i].getLivro().incQtdeExemplares();
 //		}
 //}
 //
@@ -75,7 +77,7 @@
 //	for (int i = 0; i < itens.size; i++)
 //		if (itens[i].getLivro().getCodPub() == book.getCodPub()) {
 //			itens[i].setdataDev(localtime(&t));
-//			book.inc();
+//			book.incQtdeExemplares();
 //		}
 //}
 //
@@ -83,6 +85,6 @@
 //	time_t t = time(NULL);
 //	for (int i = 0; i < itens.size; i++) {
 //		itens[i].setdataDev(localtime(&t));
-//		itens[i].getLivro().inc();
+//		itens[i].getLivro().incQtdeExemplares();
 //	}
 //}

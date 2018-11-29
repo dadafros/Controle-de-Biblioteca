@@ -1,0 +1,9 @@
+﻿  test.cpp
+c:\users\davi_\google drive\1 - ufmg\10º período\programação orientada a objetos\tp2\tp2\tp2\biblioteca.h(42): warning C4996: 'localtime': This function or variable may be unsafe. Consider using localtime_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.14393.0\ucrt\time.h(505): note: consulte a declaração de 'localtime'
+  biblioteca.cpp
+c:\users\davi_\google drive\1 - ufmg\10º período\programação orientada a objetos\tp2\tp2\tp2\biblioteca.h(42): warning C4996: 'localtime': This function or variable may be unsafe. Consider using localtime_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.14393.0\ucrt\time.h(505): note: consulte a declaração de 'localtime'
+  Gerando Código...
+  tp2.vcxproj -> C:\Users\davi_\Google Drive\1 - UFMG\10º Período\Programação Orientada a Objetos\TP2\tp2\Debug\tp2.exe
+  tp2.vcxproj -> C:\Users\davi_\Google Drive\1 - UFMG\10º Período\Programação Orientada a Objetos\TP2\tp2\Debug\tp2.pdb (Partial PDB)

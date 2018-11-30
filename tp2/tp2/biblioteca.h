@@ -3,6 +3,8 @@
 #include <ctime>
 #include <string>
 
+#define SECONDS_TO_DAYS 86400
+
 using namespace std;
 
 #ifndef Erro_H
@@ -12,7 +14,7 @@ private:
 	string tipo_erro;
 public:
 	Erro(const string &tp) : tipo_erro(tp) {};
-	void out() { cout << tipo_erro; };
+	inline string what() { return tipo_erro; };
 };
 #endif
 
@@ -78,9 +80,10 @@ private:
 	tm dataDevolucao;
 	Livro livro;
 public:
-	ItemEmprestimo(Livro &book) : livro(book) {};
+	ItemEmprestimo(Livro &book) : livro(book) { init_tm_null(dataDevolucao); };
 	inline Livro getLivro() const { return livro; };
 	inline void setdataDev(const tm &data) { dataDevolucao = data; };
+	friend void init_tm_null(tm &tms);
 };
 #endif
 
@@ -113,17 +116,17 @@ private:
 	vector<Publicacao> publicacoes;
 	vector<Emprestimo> emprestimos;
 public:
-	inline void inserirUser(const Usuario user) { usuarios.push_back(user); };
-	void excluirUser(Usuario user);
-	inline void inserirPub(const Publicacao pub) { publicacoes.push_back(pub); };
-	void excluirPub(Publicacao pub);
-	inline void inserirEmp(const Emprestimo emp) { emprestimos.push_back(emp); };
-	void excluirEmp(Emprestimo emp);
+	inline void inserirUser(const Usuario &user) { usuarios.push_back(user); };
+	void excluirUser(Usuario &user);
+	inline void inserirPub(const Publicacao &pub) { publicacoes.push_back(pub); };
+	void excluirPub(Publicacao &pub);
+	inline void inserirEmp(const Emprestimo &emp) { emprestimos.push_back(emp); };
+	void excluirEmp(Emprestimo &emp);
 	inline vector<Usuario> getUser() const { return usuarios; };
 	inline vector<Publicacao> getPub() const { return publicacoes; };
 	inline vector<Emprestimo> getEmp() const { return emprestimos; };
-	vector<Publicacao> pesqPub(string pesquisa);
-	vector<Livro> pesqAutor(string pesquisa);
+	vector<Publicacao> pesqPub(string &pesquisa);
+	vector<Livro> pesqAutor(string &pesquisa);
 	void grava(ostream arquivo) const;
 	void le(istream arquivo);
 };

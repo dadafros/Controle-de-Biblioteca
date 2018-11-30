@@ -16,39 +16,51 @@ void init_tm_null(tm &tms) {
 }
 
 void Biblioteca::excluirUser(Usuario &user) {
-	for (int i = 0; i < emprestimos.size; i++)
-		if (emprestimos[i].getUser() == user)
+	for (int i = 0; i < emprestimos.size(); i++)
+		if (emprestimos[i].getUser().getCPF() == user.getCPF())
 			throw Erro("Usuario possui emprestimos e nao pode ser excluido");
-	for (int i = 0; i < usuarios.size; i++)
-		if (usuarios[i] == user)
+	for (int i = 0; i < usuarios.size(); i++)
+		if (usuarios[i].getCPF() == user.getCPF())
 			usuarios.erase(usuarios.begin() + i);
 }
 
 void Biblioteca::excluirPub(Publicacao &pub) {
-	for (int i = 0; i < emprestimos.size; i++)
-		for (int j = 0; j < emprestimos[i].getItens().size; i++)
-			if (emprestimos[i].getItens()[j].getLivro() == pub)
+	for (int i = 0; i < emprestimos.size(); i++)
+		for (int j = 0; j < emprestimos[i].getItens().size(); i++)
+			if (emprestimos[i].getItens()[j].getLivro().getCodPub() == pub.getCodPub())
 				throw Erro("Publicacao possui emprestimos e nao pode ser excluida");
-	for (int i = 0; i < publicacoes.size; i++)
-		if (publicacoes[i] == pub)
+	for (int i = 0; i < publicacoes.size(); i++)
+		if (publicacoes[i].getCodPub() == pub.getCodPub())
 			publicacoes.erase(publicacoes.begin() + i);
 }
 
 void Biblioteca::excluirEmp(Emprestimo &emp) {
-	for (int i = 0; i < emprestimos.size; i++)
-		if (emprestimos[i] == emp)
+	for (int i = 0; i < emprestimos.size(); i++)
+		if (emprestimos[i].getNumero() == emp.getNumero())
 			emprestimos.erase(emprestimos.begin() + i);
 }
 
 vector<Publicacao> Biblioteca::pesqPub(string &pesquisa) {
-
+	vector<Publicacao> resultado;
+	for (int i = 0; i < publicacoes.size(); i++) {
+		size_t found = publicacoes[i].getTitulo().find(pesquisa);
+		if (found != std::string::npos)
+			resultado.push_back(publicacoes[i]);
+	}
+	return resultado;
 }
 
-vector<Livro> Biblioteca::pesqAutor(string &pesquisa) {
-
+vector<Publicacao> Biblioteca::pesqLivro(string &pesquisa) {
+	vector<Publicacao> resultado;
+	for (int i = 0; i < publicacoes.size(); i++) {
+		size_t found = publicacoes[i].getAutores().find(pesquisa);
+		if (found != std::string::npos)
+			resultado.push_back(publicacoes[i]);
+	}
+	return resultado;
 }
 
-void Biblioteca::grava(ostream arquivo) const {
+void Biblioteca::grava() const {
 	for(int i = 0; i < usuarios.size; i++)
 		arquivo.write((char *)&usuarios[i], sizeof(Usuario));
 	for (int i = 0; i < publicacoes.size; i++)
@@ -57,7 +69,7 @@ void Biblioteca::grava(ostream arquivo) const {
 		arquivo.write((char *)&emprestimos[i], sizeof(Emprestimo));
 }
 
-void Biblioteca::le(istream arquivo) {
+void Biblioteca::le() {
 	for (int i = 0; i < usuarios.size; i++)
 		arquivo.read((char *)&usuarios[i], sizeof(Usuario));
 	for (int i = 0; i < publicacoes.size; i++)
@@ -103,9 +115,7 @@ void Emprestimo::devolver(Livro &book) {
 }
 
 void Emprestimo::devolvertodos() {
-	time_t t = time(NULL);
 	for (int i = 0; i < itens.size(); i++) {
-		itens[i].setdataDev(*localtime(&t));
-		itens[i].getLivro().incQtdeExemplares();
+		devolver(itens[i].getLivro());
 	}
 }

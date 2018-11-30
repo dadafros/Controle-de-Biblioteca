@@ -31,6 +31,7 @@ public:
 	Usuario(string n, string doc, string addr, string phone) : nome(n), cpf(doc), endereco(addr), fone(phone) { time_t t = time(NULL); dataPenalizacao = *localtime(&t); };
 	inline void setdataPen(const tm &data) { dataPenalizacao = data; };
 	inline tm getdataPen() const { return dataPenalizacao; };
+	inline string getCPF() const { return cpf; };
 };
 #endif
 
@@ -45,6 +46,8 @@ private:
 public:
 	Publicacao(int cod, string tit, string ed, string year) : codPublicacao(cod), titulo(tit), editora(ed), ano(year) {};
 	inline int getCodPub() const { return codPublicacao; };
+	inline string getTitulo() const { return titulo; };
+	virtual string getAutores() const { return ""; };
 };
 #endif
 
@@ -59,6 +62,7 @@ public:
 	inline void incQtdeExemplares() { qtdeExemplares++; };
 	inline void decQtdeExemplares() { if (qtdeExemplares > 0) qtdeExemplares--; else throw Erro("Quantidade de Exemplares Insuficiente"); };
 	inline int getQtdeExemplares() const { return qtdeExemplares; };
+	string getAutores() const { return autores; };
 };
 #endif
 
@@ -105,6 +109,7 @@ public:
 	void devolvertodos();
 	inline Usuario getUser() const { return usuario; };
 	inline vector <ItemEmprestimo> getItens() const { return itens; };
+	inline int getNumero() { return numero; };
 };
 #endif
 
@@ -116,6 +121,7 @@ private:
 	vector<Publicacao> publicacoes;
 	vector<Emprestimo> emprestimos;
 public:
+	Biblioteca() {};
 	inline void inserirUser(const Usuario &user) { usuarios.push_back(user); };
 	void excluirUser(Usuario &user);
 	inline void inserirPub(const Publicacao &pub) { publicacoes.push_back(pub); };
@@ -126,9 +132,9 @@ public:
 	inline vector<Publicacao> getPub() const { return publicacoes; };
 	inline vector<Emprestimo> getEmp() const { return emprestimos; };
 	vector<Publicacao> pesqPub(string &pesquisa);
-	vector<Livro> pesqAutor(string &pesquisa);
-	void grava(ostream arquivo) const;
-	void le(istream arquivo);
+	vector<Publicacao> pesqLivro(string &pesquisa);
+	void grava() const;
+	void le();
 };
 #endif
 

@@ -54,37 +54,38 @@ int Emprestimo::proximoNumero = 0;
 //		arquivo.read((char *)&emprestimos[i], sizeof(Emprestimo));
 //}
 //
-void Emprestimo::addItem(Livro book) {
-	ItemEmprestimo item(book);
-	if (item.getLivro().getQtdeExemplares() > 0) {
+void Emprestimo::addItem(Livro &book) {
+	if (difftime(time(NULL), mktime(&usuario.getdataPen())) < 0) {
+		book.decQtdeExemplares();
+		ItemEmprestimo item(book);
 		itens.push_back(item);
-		item.getLivro().decQtdeExemplares();
 	}
-	else
-		throw Erro("Quantidade de Exemplares Insuficiente");
+	else throw Erro("Usuario penalizado");
 }
-//
-//void Emprestimo::remvItem(Livro book) {
-//	for (int i = 0; i < itens.size; i++)
-//		if (itens[i].getLivro().getCodPub() == book.getCodPub()) {
-//			itens.erase(itens.begin() + i);
-//			itens[i].getLivro().incQtdeExemplares();
-//		}
-//}
-//
-//void Emprestimo::devolver(Livro book) {
-//	time_t t = time(NULL);
-//	for (int i = 0; i < itens.size; i++)
-//		if (itens[i].getLivro().getCodPub() == book.getCodPub()) {
-//			itens[i].setdataDev(localtime(&t));
-//			book.incQtdeExemplares();
-//		}
-//}
-//
-//void Emprestimo::devolvertodos() {
-//	time_t t = time(NULL);
-//	for (int i = 0; i < itens.size; i++) {
-//		itens[i].setdataDev(localtime(&t));
-//		itens[i].getLivro().incQtdeExemplares();
-//	}
-//}
+
+void Emprestimo::remvItem(Livro &book) {
+	for (int i = 0; i < itens.size(); i++)
+		if (itens[i].getLivro().getCodPub() == book.getCodPub()) {
+			itens.erase(itens.begin() + i);
+			book.incQtdeExemplares();
+			break;
+		}
+}
+
+void Emprestimo::devolver(Livro &book) {
+	time_t t = time(NULL);
+	for (int i = 0; i < itens.size(); i++)
+		if (itens[i].getLivro().getCodPub() == book.getCodPub()) {
+			itens[i].setdataDev(*localtime(&t));
+			book.incQtdeExemplares();
+			break;
+		}
+}
+
+void Emprestimo::devolvertodos() {
+	time_t t = time(NULL);
+	for (int i = 0; i < itens.size(); i++) {
+		itens[i].setdataDev(*localtime(&t));
+		itens[i].getLivro().incQtdeExemplares();
+	}
+}

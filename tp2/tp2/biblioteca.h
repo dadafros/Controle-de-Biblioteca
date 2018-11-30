@@ -24,9 +24,11 @@ private:
 	string cpf;
 	string endereco;
 	string fone;
-	tm *dataPenalizacao;
+	tm dataPenalizacao;
 public:
-	Usuario(string n, string doc, string addr, string phone) : nome(n), cpf(doc), endereco(addr), fone(phone) { time_t t = time(NULL); dataPenalizacao = localtime(&t); };
+	Usuario(string n, string doc, string addr, string phone) : nome(n), cpf(doc), endereco(addr), fone(phone) { time_t t = time(NULL); dataPenalizacao = *localtime(&t); };
+	inline void setdataPen(const tm &data) { dataPenalizacao = data; };
+	inline tm getdataPen() const { return dataPenalizacao; };
 };
 #endif
 
@@ -40,6 +42,7 @@ private:
 	string ano;
 public:
 	Publicacao(int cod, string tit, string ed, string year) : codPublicacao(cod), titulo(tit), editora(ed), ano(year) {};
+	inline int getCodPub() const { return codPublicacao; };
 };
 #endif
 
@@ -72,12 +75,12 @@ public:
 #define ItemEmprestimo_H
 class ItemEmprestimo {
 private:
-	tm *dataDevolucao;
+	tm dataDevolucao;
 	Livro livro;
 public:
-	ItemEmprestimo(Livro book) : livro(book), dataDevolucao(NULL) {};
-	Livro getLivro() { return livro; };
-	void setdataDev(tm *data) { dataDevolucao = data; };
+	ItemEmprestimo(Livro &book) : livro(book) {};
+	inline Livro getLivro() const { return livro; };
+	inline void setdataDev(const tm &data) { dataDevolucao = data; };
 };
 #endif
 
@@ -86,19 +89,19 @@ public:
 class Emprestimo {
 private:
 	int numero;
-	tm *dataEmprestimo;
-	tm *dataPrevDevolucao;
+	tm dataEmprestimo;
+	tm dataPrevDevolucao;
 	Usuario usuario;
 	vector <ItemEmprestimo> itens;
 	static int proximoNumero;
 public:
-	Emprestimo(tm *dataPDev, Usuario user) : dataPrevDevolucao(dataPDev), usuario(user) { numero = proximoNumero++; time_t t = time(NULL); dataEmprestimo = localtime(&t); };
-	void addItem(Livro book);
-	void remvItem(Livro book);
-	void devolver(Livro book);
+	Emprestimo(tm &dataPDev, Usuario &user) : dataPrevDevolucao(dataPDev), usuario(user) { numero = proximoNumero++; time_t t = time(NULL); dataEmprestimo = *localtime(&t); };
+	void addItem(Livro &book);
+	void remvItem(Livro &book);
+	void devolver(Livro &book);
 	void devolvertodos();
-	inline Usuario getUser() { return usuario; };
-	inline vector <ItemEmprestimo> getItens() { return itens; };
+	inline Usuario getUser() const { return usuario; };
+	inline vector <ItemEmprestimo> getItens() const { return itens; };
 };
 #endif
 

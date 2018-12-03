@@ -134,7 +134,7 @@ public:
 	inline std::vector<std::reference_wrapper<Publicacao>> getPub() const { return publicacoes; };
 	inline std::vector<Emprestimo> getEmp() const { return emprestimos; };
 	std::vector<Publicacao> pesqPub(const std::string &pesquisa) const;
-	std::vector<Publicacao> pesqLivro(const std::string &pesquisa);
+	std::vector<std::reference_wrapper<Publicacao>> pesqLivro(const std::string &pesquisa);
 };
 #endif
 

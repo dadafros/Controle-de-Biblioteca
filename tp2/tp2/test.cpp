@@ -1,4 +1,5 @@
 #include "biblioteca.h"
+#include <iostream>
 
 using namespace std;
 
@@ -32,13 +33,28 @@ int main() {
 	bib.inserirItemEmp(proDavi, quebra);
 	bib.inserirItemEmp(praCarla, kalman);
 	bib.inserirItemEmp(praCarla, quebra);
-
+	
 	vector<Emprestimo> resultado1 = bib.getEmp(); // obtém os registros da biblioteca (emprestimos, publicações e usuários)
 	vector<std::reference_wrapper<Publicacao>> resultado2 = bib.getPub();
 	vector<Usuario> resultado3 = bib.getUser();
 	
 	vector<Publicacao> resultado4 = bib.pesqPub("Kalman"); // pesquisas nas publicações da biblioteca
-	vector<Publicacao> resultado5 = bib.pesqLivro("Jesus");
+	vector<std::reference_wrapper<Publicacao>> resultado5 = bib.pesqLivro("Jesus");
 
-	system("pause");
+	bib.devolverItem(proDavi, kalman); // devoluções
+	bib.devolverItem(praCarla, quebra);
+	bib.devolvertodosItens(proDavi);
+
+	try {
+		bib.inserirItemEmp(proDavi, biblia);
+	}
+	catch (Erro &e){
+		cout << e.what() << endl;
+	}
+	bib.inserirItemEmp(proDavi, biblia);
+	
+	bib.excluirItemEmp(proDavi, biblia); //exclusões
+	bib.excluirPub(biblia);
+	bib.excluirEmp(proDavi);
+	bib.excluirUser(davi);
 }

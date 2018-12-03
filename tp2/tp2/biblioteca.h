@@ -1,20 +1,18 @@
-#include <iostream>
 #include <vector>
 #include <ctime>
 #include <string>
+#include <functional>
 
 #define SECONDS_TO_DAYS 86400
-
-using namespace std;
 
 #ifndef Erro_H
 #define Erro_H
 class Erro {
 private:
-	string tipo_erro;
+	std::string tipo_erro;
 public:
-	Erro(const string &tp) : tipo_erro(tp) {};
-	inline string what() { return tipo_erro; };
+	Erro(const std::string &tp) : tipo_erro(tp) {};
+	inline std::string what() { return tipo_erro; };
 };
 #endif
 
@@ -22,16 +20,16 @@ public:
 #define Usuario_H
 class Usuario {
 private:
-	string nome;
-	string cpf;
-	string endereco;
-	string fone;
+	std::string nome;
+	std::string cpf;
+	std::string endereco;
+	std::string fone;
 	tm dataPenalizacao;
 public:
-	Usuario(string n, string doc, string addr, string phone) : nome(n), cpf(doc), endereco(addr), fone(phone) { time_t t = time(NULL); dataPenalizacao = *localtime(&t); };
+	Usuario(std::string n, std::string doc, std::string addr, std::string phone) : nome(n), cpf(doc), endereco(addr), fone(phone) { time_t t = time(NULL); dataPenalizacao = *localtime(&t); };
 	inline void setdataPen(const tm &data) { dataPenalizacao = data; };
 	inline tm getdataPen() const { return dataPenalizacao; };
-	inline string getCPF() const { return cpf; };
+	inline std::string getCPF() const { return cpf; };
 };
 #endif
 
@@ -40,14 +38,14 @@ public:
 class Publicacao {
 private:
 	int codPublicacao;
-	string titulo;
-	string editora;
-	string ano;
+	std::string titulo;
+	std::string editora;
+	std::string ano;
 public:
-	Publicacao(int cod, string tit, string ed, string year) : codPublicacao(cod), titulo(tit), editora(ed), ano(year) {};
+	Publicacao(int cod, std::string tit, std::string ed, std::string year) : codPublicacao(cod), titulo(tit), editora(ed), ano(year) {};
 	inline int getCodPub() const { return codPublicacao; };
-	inline string getTitulo() const { return titulo; };
-	virtual string getAutores() const { return ""; };
+	inline std::string getTitulo() const { return titulo; };
+	virtual void dummy() {};
 };
 #endif
 
@@ -55,14 +53,14 @@ public:
 #define Livro_H
 class Livro : public Publicacao {
 private:
-	string autores;
+	std::string autores;
 	int qtdeExemplares;
 public:
-	Livro(int cod, string tit, string ed, string year, string aut, int qtde = 0) : Publicacao(cod, tit, ed, year), autores(aut), qtdeExemplares(qtde) {};
+	Livro(int cod, std::string tit, std::string ed, std::string year, std::string aut, int qtde = 0) : Publicacao(cod, tit, ed, year), autores(aut), qtdeExemplares(qtde) {};
 	inline void incQtdeExemplares() { qtdeExemplares++; };
 	inline void decQtdeExemplares() { if (qtdeExemplares > 0) qtdeExemplares--; else throw Erro("Quantidade de Exemplares Insuficiente"); };
 	inline int getQtdeExemplares() const { return qtdeExemplares; };
-	string getAutores() const { return autores; };
+	inline std::string getAutores() const { return autores; };
 };
 #endif
 
@@ -71,9 +69,9 @@ public:
 class Periodico : public Publicacao {
 private:
 	int numEdicao;
-	string mes;
+	std::string mes;
 public:
-	Periodico(int cod, string tit, string ed, string year, int numed, string month) : Publicacao(cod, tit, ed, year), numEdicao(numed), mes(month) {};
+	Periodico(int cod, std::string tit, std::string ed, std::string year, int numed, std::string month) : Publicacao(cod, tit, ed, year), numEdicao(numed), mes(month) {};
 };
 #endif
 
@@ -99,7 +97,7 @@ private:
 	tm dataEmprestimo;
 	tm dataPrevDevolucao;
 	Usuario usuario;
-	vector <ItemEmprestimo> itens;
+	std::vector <ItemEmprestimo> itens;
 	static int proximoNumero;
 public:
 	Emprestimo(tm &dataPDev, Usuario &user) : dataPrevDevolucao(dataPDev), usuario(user) { numero = proximoNumero++; time_t t = time(NULL); dataEmprestimo = *localtime(&t); };
@@ -108,8 +106,8 @@ public:
 	void devolver(Livro &book);
 	void devolvertodos();
 	inline Usuario getUser() const { return usuario; };
-	inline vector <ItemEmprestimo> getItens() const { return itens; };
-	inline int getNumero() { return numero; };
+	inline std::vector <ItemEmprestimo> getItens() const { return itens; };
+	inline int getNumero() const { return numero; } ;
 };
 #endif
 
@@ -117,24 +115,26 @@ public:
 #define Biblioteca_H
 class Biblioteca {
 private:
-	vector<Usuario> usuarios;
-	vector<Publicacao> publicacoes;
-	vector<Emprestimo> emprestimos;
+	std::vector<Usuario> usuarios;
+	std::vector<std::reference_wrapper<Publicacao>> publicacoes;
+	std::vector<Emprestimo> emprestimos;
 public:
 	Biblioteca() {};
 	inline void inserirUser(const Usuario &user) { usuarios.push_back(user); };
-	void excluirUser(Usuario &user);
-	inline void inserirPub(const Publicacao &pub) { publicacoes.push_back(pub); };
-	void excluirPub(Publicacao &pub);
+	void excluirUser(const Usuario &user);
+	inline void inserirPub(Publicacao &pub) { publicacoes.push_back(pub); };
+	void excluirPub(const Publicacao &pub);
 	inline void inserirEmp(const Emprestimo &emp) { emprestimos.push_back(emp); };
-	void excluirEmp(Emprestimo &emp);
-	inline vector<Usuario> getUser() const { return usuarios; };
-	inline vector<Publicacao> getPub() const { return publicacoes; };
-	inline vector<Emprestimo> getEmp() const { return emprestimos; };
-	vector<Publicacao> pesqPub(string &pesquisa);
-	vector<Publicacao> pesqLivro(string &pesquisa);
-	void grava() const;
-	void le();
+	void excluirEmp(const Emprestimo &emp);
+	void inserirItemEmp(Emprestimo &emp, Livro &book); 
+	void excluirItemEmp(Emprestimo &emp, Livro &book); 
+	void devolverItem(Emprestimo &emp, Livro &book); 
+	void devolvertodosItens(Emprestimo &emp); 
+	inline std::vector<Usuario> getUser() const { return usuarios; };
+	inline std::vector<std::reference_wrapper<Publicacao>> getPub() const { return publicacoes; };
+	inline std::vector<Emprestimo> getEmp() const { return emprestimos; };
+	std::vector<Publicacao> pesqPub(const std::string &pesquisa) const;
+	std::vector<Publicacao> pesqLivro(const std::string &pesquisa);
 };
 #endif
 

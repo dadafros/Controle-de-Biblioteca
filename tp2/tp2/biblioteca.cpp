@@ -15,7 +15,7 @@ void init_tm_null(tm &tms) {
 	tms.tm_isdst = 0; // daylight savings time flag
 }
 
-void Biblioteca::excluirUser(Usuario &user) {
+void Biblioteca::excluirUser(const Usuario &user) {
 	for (int i = 0; i < emprestimos.size(); i++)
 		if (emprestimos[i].getUser().getCPF() == user.getCPF())
 			throw Erro("Usuario possui emprestimos e nao pode ser excluido");
@@ -24,62 +24,72 @@ void Biblioteca::excluirUser(Usuario &user) {
 			usuarios.erase(usuarios.begin() + i);
 }
 
-void Biblioteca::excluirPub(Publicacao &pub) {
+void Biblioteca::excluirPub(const Publicacao &pub) {
 	for (int i = 0; i < emprestimos.size(); i++)
 		for (int j = 0; j < emprestimos[i].getItens().size(); i++)
 			if (emprestimos[i].getItens()[j].getLivro().getCodPub() == pub.getCodPub())
 				throw Erro("Publicacao possui emprestimos e nao pode ser excluida");
 	for (int i = 0; i < publicacoes.size(); i++)
-		if (publicacoes[i].getCodPub() == pub.getCodPub())
+		if (publicacoes[i].get().getCodPub() == pub.getCodPub())
 			publicacoes.erase(publicacoes.begin() + i);
 }
 
-void Biblioteca::excluirEmp(Emprestimo &emp) {
+void Biblioteca::excluirEmp(const Emprestimo &emp) {
 	for (int i = 0; i < emprestimos.size(); i++)
 		if (emprestimos[i].getNumero() == emp.getNumero())
 			emprestimos.erase(emprestimos.begin() + i);
 }
 
-vector<Publicacao> Biblioteca::pesqPub(string &pesquisa) {
-	vector<Publicacao> resultado;
+void Biblioteca::inserirItemEmp(Emprestimo &emp, Livro &book) { 
+	for (int i = 0; i < emprestimos.size(); i++)
+		if (emprestimos[i].getNumero() == emp.getNumero())
+			emprestimos[i].addItem(book);
+};
+
+void Biblioteca::excluirItemEmp(Emprestimo &emp, Livro &book) {
+	for (int i = 0; i < emprestimos.size(); i++)
+		if (emprestimos[i].getNumero() == emp.getNumero())
+			emprestimos[i].remvItem(book);
+};
+
+void Biblioteca::devolverItem(Emprestimo &emp, Livro &book) {
+	for (int i = 0; i < emprestimos.size(); i++)
+		if (emprestimos[i].getNumero() == emp.getNumero())
+			emprestimos[i].devolver(book);
+};
+
+void Biblioteca::devolvertodosItens(Emprestimo &emp) {
+	for (int i = 0; i < emprestimos.size(); i++)
+		if (emprestimos[i].getNumero() == emp.getNumero())
+			emprestimos[i].devolvertodos();
+};
+
+std::vector<Publicacao> Biblioteca::pesqPub(const std::string &pesquisa) const {
+	std::vector<Publicacao> resultado;
 	for (int i = 0; i < publicacoes.size(); i++) {
-		size_t found = publicacoes[i].getTitulo().find(pesquisa);
+		size_t found = publicacoes[i].get().getTitulo().find(pesquisa);
 		if (found != std::string::npos)
 			resultado.push_back(publicacoes[i]);
 	}
 	return resultado;
 }
 
-vector<Publicacao> Biblioteca::pesqLivro(string &pesquisa) {
-	vector<Publicacao> resultado;
+std::vector<Publicacao> Biblioteca::pesqLivro(const std::string &pesquisa) {
+	std::vector<Publicacao> resultado;
 	for (int i = 0; i < publicacoes.size(); i++) {
-		size_t found = publicacoes[i].getAutores().find(pesquisa);
-		if (found != std::string::npos)
-			resultado.push_back(publicacoes[i]);
+		Publicacao *pub = &publicacoes[i].get();
+		Livro *book = dynamic_cast<Livro*>(pub); // downcasting 
+		if (book != 0) {
+			size_t found = book[0].getAutores().find(pesquisa);
+			if (found != std::string::npos)
+				resultado.push_back(publicacoes[i]);
+		}
 	}
 	return resultado;
-}
-
-void Biblioteca::grava() const {
-	for(int i = 0; i < usuarios.size; i++)
-		arquivo.write((char *)&usuarios[i], sizeof(Usuario));
-	for (int i = 0; i < publicacoes.size; i++)
-		arquivo.write((char *)&publicacoes[i], sizeof(Publicacao));
-	for (int i = 0; i < emprestimos.size; i++)
-		arquivo.write((char *)&emprestimos[i], sizeof(Emprestimo));
-}
-
-void Biblioteca::le() {
-	for (int i = 0; i < usuarios.size; i++)
-		arquivo.read((char *)&usuarios[i], sizeof(Usuario));
-	for (int i = 0; i < publicacoes.size; i++)
-		arquivo.read((char *)&publicacoes[i], sizeof(Publicacao));
-	for (int i = 0; i < emprestimos.size; i++)
-		arquivo.read((char *)&emprestimos[i], sizeof(Emprestimo));
 }
 
 void Emprestimo::addItem(Livro &book) {
-	if (difftime(time(NULL), mktime(&usuario.getdataPen())) < 0) {
+	if (difftime(mktime(&usuario.getdataPen()), time(NULL)) <= 0) {
 		book.decQtdeExemplares();
 		ItemEmprestimo item(book);
 		itens.push_back(item);

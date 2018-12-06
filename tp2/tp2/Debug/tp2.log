@@ -1,4 +1,11 @@
-﻿  biblioteca.cpp
+﻿  test.cpp
+c:\users\davi_\documents\github\controle-de-biblioteca\tp2\tp2\biblioteca.h(29): warning C4996: 'localtime': This function or variable may be unsafe. Consider using localtime_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.14393.0\ucrt\time.h(505): note: consulte a declaração de 'localtime'
+c:\users\davi_\documents\github\controle-de-biblioteca\tp2\tp2\biblioteca.h(103): warning C4996: 'localtime': This function or variable may be unsafe. Consider using localtime_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.14393.0\ucrt\time.h(505): note: consulte a declaração de 'localtime'
+c:\users\davi_\documents\github\controle-de-biblioteca\tp2\tp2\test.cpp(16): warning C4996: 'localtime': This function or variable may be unsafe. Consider using localtime_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.14393.0\ucrt\time.h(505): note: consulte a declaração de 'localtime'
+  biblioteca.cpp
 c:\users\davi_\documents\github\controle-de-biblioteca\tp2\tp2\biblioteca.h(29): warning C4996: 'localtime': This function or variable may be unsafe. Consider using localtime_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.14393.0\ucrt\time.h(505): note: consulte a declaração de 'localtime'
 c:\users\davi_\documents\github\controle-de-biblioteca\tp2\tp2\biblioteca.h(103): warning C4996: 'localtime': This function or variable may be unsafe. Consider using localtime_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
@@ -24,5 +31,6 @@ c:\users\davi_\documents\github\controle-de-biblioteca\tp2\tp2\biblioteca.cpp(14
 c:\users\davi_\documents\github\controle-de-biblioteca\tp2\tp2\biblioteca.cpp(150): warning C4244: 'inicializando': conversão de 'double' para 'int', possível perda de dados
 c:\users\davi_\documents\github\controle-de-biblioteca\tp2\tp2\biblioteca.cpp(143): warning C4996: 'localtime': This function or variable may be unsafe. Consider using localtime_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.14393.0\ucrt\time.h(505): note: consulte a declaração de 'localtime'
+  Gerando Código...
   tp2.vcxproj -> C:\Users\davi_\Documents\GitHub\Controle-de-Biblioteca\tp2\Debug\tp2.exe
   tp2.vcxproj -> C:\Users\davi_\Documents\GitHub\Controle-de-Biblioteca\tp2\Debug\tp2.pdb (Partial PDB)

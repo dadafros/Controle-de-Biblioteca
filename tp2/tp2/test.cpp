@@ -34,9 +34,9 @@ int main() {
 	bib.inserirItemEmp(praCarla, kalman);
 	bib.inserirItemEmp(praCarla, quebra);
 	
-	vector<Emprestimo> resultado1 = bib.getEmp(); // obtém os registros da biblioteca (emprestimos, publicações e usuários)
+	vector<std::reference_wrapper<Emprestimo>> resultado1 = bib.getEmp(); // obtém os registros da biblioteca (emprestimos, publicações e usuários)
 	vector<std::reference_wrapper<Publicacao>> resultado2 = bib.getPub();
-	vector<Usuario> resultado3 = bib.getUser();
+	vector<std::reference_wrapper<Usuario>> resultado3 = bib.getUser();
 	
 	vector<Publicacao> resultado4 = bib.pesqPub("Kalman"); // pesquisas nas publicações da biblioteca
 	vector<std::reference_wrapper<Publicacao>> resultado5 = bib.pesqLivro("Jesus");

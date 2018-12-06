@@ -17,10 +17,10 @@ void init_tm_null(tm &tms) {
 
 void Biblioteca::excluirUser(const Usuario &user) {
 	for (int i = 0; i < emprestimos.size(); i++)
-		if (emprestimos[i].getUser().getCPF() == user.getCPF())
+		if (emprestimos[i].get().getUser().getCPF() == user.getCPF())
 			throw Erro("Usuario possui emprestimos e nao pode ser excluido");
 	for (int i = 0; i < usuarios.size(); i++)
-		if (usuarios[i].getCPF() == user.getCPF()) {
+		if (usuarios[i].get().getCPF() == user.getCPF()) {
 			usuarios.erase(usuarios.begin() + i);
 			break;
 		}
@@ -28,8 +28,8 @@ void Biblioteca::excluirUser(const Usuario &user) {
 
 void Biblioteca::excluirPub(const Publicacao &pub) {
 	for (int i = 0; i < emprestimos.size(); i++)
-		for (int j = 0; j < emprestimos[i].getItens().size(); j++)
-			if (emprestimos[i].getItens()[j].getLivro().getCodPub() == pub.getCodPub())
+		for (int j = 0; j < emprestimos[i].get().getItens().size(); j++)
+			if (emprestimos[i].get().getItens()[j].getLivro().getCodPub() == pub.getCodPub())
 				throw Erro("Publicacao possui emprestimos e nao pode ser excluida");
 	for (int i = 0; i < publicacoes.size(); i++)
 		if (publicacoes[i].get().getCodPub() == pub.getCodPub()) {
@@ -40,7 +40,7 @@ void Biblioteca::excluirPub(const Publicacao &pub) {
 
 void Biblioteca::excluirEmp(const Emprestimo &emp) {
 	for (int i = 0; i < emprestimos.size(); i++)
-		if (emprestimos[i].getNumero() == emp.getNumero()) {
+		if (emprestimos[i].get().getNumero() == emp.getNumero()) {
 			emprestimos.erase(emprestimos.begin() + i);
 			break;
 		}
@@ -48,32 +48,32 @@ void Biblioteca::excluirEmp(const Emprestimo &emp) {
 
 void Biblioteca::inserirItemEmp(Emprestimo &emp, Livro &book) { 
 	for (int i = 0; i < emprestimos.size(); i++)
-		if (emprestimos[i].getNumero() == emp.getNumero()) {
-			emprestimos[i].addItem(book);
+		if (emprestimos[i].get().getNumero() == emp.getNumero()) {
+			emprestimos[i].get().addItem(book);
 			break;
 		}
 };
 
 void Biblioteca::excluirItemEmp(Emprestimo &emp, Livro &book) {
 	for (int i = 0; i < emprestimos.size(); i++)
-		if (emprestimos[i].getNumero() == emp.getNumero()) {
-			emprestimos[i].remvItem(book);
+		if (emprestimos[i].get().getNumero() == emp.getNumero()) {
+			emprestimos[i].get().remvItem(book);
 			break;
 		}
 };
 
 void Biblioteca::devolverItem(Emprestimo &emp, Livro &book) {
 	for (int i = 0; i < emprestimos.size(); i++)
-		if (emprestimos[i].getNumero() == emp.getNumero()) {
-			emprestimos[i].devolver(book);
+		if (emprestimos[i].get().getNumero() == emp.getNumero()) {
+			emprestimos[i].get().devolver(book);
 			break;
 		}
 };
 
 void Biblioteca::devolvertodosItens(Emprestimo &emp) {
 	for (int i = 0; i < emprestimos.size(); i++)
-		if (emprestimos[i].getNumero() == emp.getNumero()) {
-			emprestimos[i].devolvertodos();
+		if (emprestimos[i].get().getNumero() == emp.getNumero()) {
+			emprestimos[i].get().devolvertodos();
 			break;
 		}
 };

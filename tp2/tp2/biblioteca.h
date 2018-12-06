@@ -115,24 +115,24 @@ public:
 #define Biblioteca_H
 class Biblioteca {
 private:
-	std::vector<Usuario> usuarios;
+	std::vector<std::reference_wrapper<Usuario>> usuarios;
 	std::vector<std::reference_wrapper<Publicacao>> publicacoes;
-	std::vector<Emprestimo> emprestimos;
+	std::vector<std::reference_wrapper<Emprestimo>> emprestimos;
 public:
 	Biblioteca() {};
-	inline void inserirUser(const Usuario &user) { usuarios.push_back(user); };
+	inline void inserirUser(Usuario &user) { usuarios.push_back(user); };
 	void excluirUser(const Usuario &user);
 	inline void inserirPub(Publicacao &pub) { publicacoes.push_back(pub); };
 	void excluirPub(const Publicacao &pub);
-	inline void inserirEmp(const Emprestimo &emp) { emprestimos.push_back(emp); };
+	inline void inserirEmp(Emprestimo &emp) { emprestimos.push_back(emp); };
 	void excluirEmp(const Emprestimo &emp);
 	void inserirItemEmp(Emprestimo &emp, Livro &book); 
 	void excluirItemEmp(Emprestimo &emp, Livro &book); 
 	void devolverItem(Emprestimo &emp, Livro &book); 
 	void devolvertodosItens(Emprestimo &emp); 
-	inline std::vector<Usuario> getUser() const { return usuarios; };
+	inline std::vector<std::reference_wrapper<Usuario>> getUser() const { return usuarios; };
 	inline std::vector<std::reference_wrapper<Publicacao>> getPub() const { return publicacoes; };
-	inline std::vector<Emprestimo> getEmp() const { return emprestimos; };
+	inline std::vector<std::reference_wrapper<Emprestimo>> getEmp() const { return emprestimos; };
 	std::vector<Publicacao> pesqPub(const std::string &pesquisa) const;
 	std::vector<std::reference_wrapper<Publicacao>> pesqLivro(const std::string &pesquisa);
 };
